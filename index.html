@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Test Engineer Guide 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            padding: 1%;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f2847 0%, #1e3c72 100%);
+            color: white;
+            padding: 12px 1%;
+            text-align: center;
+            border-bottom: 3px solid #4CAF50;
+        }
+
+        header h1 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        header p {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+
+        .stats-bar {
+            background: #fff3cd;
+            padding: 8px 1%;
+            border-bottom: 2px solid #ffc107;
+            font-size: 10px;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+
+        .stat-item {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f2847;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .progress-bar-container {
+            background: #e9ecef;
+            height: 20px;
+            border-radius: 10px;
+            margin: 12px 1% 8px 1%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+
+        .quick-actions {
+            padding: 8px 1%;
+            background: #f8f9fa;
+            display: flex;
+            gap: 6px;
+            border-bottom: 1px solid #dee2e6;
+            flex-wrap: wrap;
+        }
+
+        .quick-btn {
+            flex: 1;
+            min-width: 70px;
+            padding: 8px 6px;
+            background: white;
+            border: 2px solid #1e3c72;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #1e3c72;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .quick-btn:active {
+            transform: scale(0.95);
+            background: #1e3c72;
+            color: white;
+        }
+
+        .filter-bar {
+            background: #f8f9fa;
+            padding: 8px 1%;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 6px 12px;
+            border: 2px solid #1e3c72;
+            background: white;
+            color: #1e3c72;
+            border-radius: 16px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #1e3c72;
+            color: white;
+        }
+
+        .content {
+            padding: 1%;
+        }
+
+        .difficulty-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .expert { background: #dc3545; color: white; }
+        .advanced { background: #fd7e14; color: white; }
+        .intermediate { background: #ffc107; color: #333; }
+        .basic { background: #28a745; color: white; }
+
+        .task-card {
+            background: #f8f9fa;
+            border-left: 4px solid #1e3c72;
+            padding: 10px 1%;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .task-card.hidden {
+            display: none;
+        }
+
+        .task-card.completed {
+            opacity: 0.7;
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .task-card.completed .task-title::before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .task-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #0f2847;
+            margin-bottom: 6px;
+        }
+
+        .task-desc {
+            font-size: 11px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+
+        .section-header {
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 8px 1%;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 12px 0 8px 0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-header::before {
+            content: "▼ ";
+            margin-right: 8px;
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header.collapsed::before {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            max-height: 5000px;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+        }
+
+        .section-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-complete {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-complete:active {
+            background: #218838;
+        }
+
+        .btn-expand {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .btn-expand:active {
+            background: #138496;
+        }
+
+        .btn-note {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-note:active {
+            background: #5a6268;
+        }
+
+        .expanded-content {
+            display: none;
+            margin-top: 8px;
+            padding: 8px;
+            background: white;
+            border-radius: 4px;
+            font-size: 10px;
+            line-height: 1.6;
+            border: 1px solid #dee2e6;
+        }
+
+        .expanded-content.active {
+            display: block;
+        }
+
+        .notes-area {
+            margin-top: 8px;
+            display: none;
+        }
+
+        .notes-area.active {
+            display: block;
+        }
+
+        .notes-area textarea {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .progress-indicator {
+            font-size: 10px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        footer {
+            background: #0f2847;
+            color: white;
+            text-align: center;
+            padding: 10px 1%;
+            font-size: 10px;
+            margin-top: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .quick-btn {
+                min-width: 60px;
+                font-size: 9px;
+                padding: 6px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 Senior Test Engineer Instruction Guide</h1>
+            <p>Filipino Edition 2026 | Complete Task Reference</p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="completedCount">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="totalTasks">15</div>
+                <div class="stat-label">Total Tasks</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="progressPercent">0%</div>
+                <div class="stat-label">Progress</div>
+            </div>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            <div class="progress-text" id="progressText">0% Complete</div>
+        </div>
+
+        <div class="quick-actions">
+            <button class="quick-btn" onclick="resetProgress()">🔄 Reset</button>
+            <button class="quick-btn" onclick="expandAll()">📂 Expand</button>
+            <button class="quick-btn" onclick="collapseAll()">📁 Collapse</button>
+            <button class="quick-btn" onclick="exportNotes()">💾 Export</button>
+        </div>
+
+        <div class="filter-bar">
+            <span style="font-size: 10px; font-weight: 600; color: #666;">Filter:</span>
+            <button class="filter-btn active" onclick="filterTasks('all')">All</button>
+            <button class="filter-btn" onclick="filterTasks('expert')">Expert</button>
+            <button class="filter-btn" onclick="filterTasks('advanced')">Advanced</button>
+            <button class="filter-btn" onclick="filterTasks('intermediate')">Mid</button>
+            <button class="filter-btn" onclick="filterTasks('basic')">Basic</button>
+            <button class="filter-btn" onclick="filterTasks('completed')">✓ Done</button>
+        </div>
+
+        <div class="content">
+            <div class="section-header" onclick="toggleSection(this)">Expert Level Tasks <span>(2)</span></div>
+            <div class="section-content">
+            
+            <div class="task-card" data-level="expert" data-id="1">
+                <div class="task-title">
+                    <span class="difficulty-badge expert">EXPERT</span>
+                    Integrate Test Automation & Maintain CI/CD
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Set up and maintain CI/CD pipelines across environments.<br>
+                    <strong>Actions:</strong> Configure Jenkins/GitLab, integrate test suites, manage configs, monitor builds, troubleshoot failures.
+                </div>
+                <div class="progress-indicator">⏱️ 2-4 weeks to master</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Tools:</strong> Jenkins, GitLab CI, Docker, Kubernetes, Bash/Python<br>
+                    <strong>Learn:</strong> "Continuous Delivery" by Jez Humble<br>
+                    <strong>PH Community:</strong> Join Filipino QA Slack groups
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="expert" data-id="2">
+                <div class="task-title">
+                    <span class="difficulty-badge expert">EXPERT</span>
+                    Analyze Runlists for Performance Optimization
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Identify and optimize long-running test steps.<br>
+                    <strong>Actions:</strong> Review logs, find bottlenecks, refactor slow tests, implement parallel execution.
+                </div>
+                <div class="progress-indicator">⏱️ 1-2 weeks per cycle</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Tools:</strong> JProfiler, Chrome DevTools, JMeter, K6, Grafana<br>
+                    <strong>Tip:</strong> Focus on 20% of tests taking 80% of time
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+            </div>
+
+            <div class="section-header" onclick="toggleSection(this)">Advanced Level Tasks <span>(5)</span></div>
+            <div class="section-content">
+
+            <div class="task-card" data-level="advanced" data-id="3">
+                <div class="task-title">
+                    <span class="difficulty-badge advanced">ADVANCED</span>
+                    Design & Maintain UI/API Test Scripts
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Create automated test suites for UI and APIs.<br>
+                    <strong>Actions:</strong> Write Selenium/Playwright scripts, develop API tests, implement POM pattern.
+                </div>
+                <div class="progress-indicator">⏱️ Ongoing</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Tools:</strong> Selenium, Playwright, Cypress, RestAssured, Postman<br>
+                    <strong>Pattern:</strong> Page Object Model (POM)
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="advanced" data-id="4">
+                <div class="task-title">
+                    <span class="difficulty-badge advanced">ADVANCED</span>
+                    Apply Software Design Principles
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Implement SOLID principles in test code.<br>
+                    <strong>Actions:</strong> Use design patterns, apply DRY, create modular code, refactor legacy tests.
+                </div>
+                <div class="progress-indicator">⏱️ 1-2 weeks</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Patterns:</strong> SOLID, POM, Factory, Builder<br>
+                    <strong>Book:</strong> "Clean Code" by Robert Martin
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="advanced" data-id="5">
+                <div class="task-title">
+                    <span class="difficulty-badge advanced">ADVANCED</span>
+                    Develop Cucumber Test Scripts (>80% Coverage)
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Write BDD scenarios in Gherkin language.<br>
+                    <strong>Actions:</strong> Write feature files, implement step definitions, peer review, track coverage.
+                </div>
+                <div class="progress-indicator">⏱️ Ongoing</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Framework:</strong> Cucumber, Gherkin (Given-When-Then)<br>
+                    <strong>Tip:</strong> Make scenarios business-readable
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="advanced" data-id="6">
+                <div class="task-title">
+                    <span class="difficulty-badge advanced">ADVANCED</span>
+                    Extend Coverage from Production Bugs
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Automate test cases from production issues.<br>
+                    <strong>Actions:</strong> Analyze bug reports, reproduce issues, create regression tests, automate.
+                </div>
+                <div class="progress-indicator">⏱️ 2-4 hours per bug</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Process:</strong> Review Jira → Reproduce → Create test → Automate<br>
+                    <strong>Rule:</strong> Every prod bug = new automated test
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="advanced" data-id="7">
+                <div class="task-title">
+                    <span class="difficulty-badge advanced">ADVANCED</span>
+                    Evaluate Failing Tests & Root Cause
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Investigate test failures and identify root cause.<br>
+                    <strong>Actions:</strong> Review logs/screenshots, debug scripts, analyze app behavior, report findings.
+                </div>
+                <div class="progress-indicator">⏱️ 30 mins - 2 hours</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Debug:</strong> Check logs, screenshots, network requests, test data<br>
+                    <strong>Ask:</strong> Test issue or app issue?
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+            </div>
+
+            <div class="section-header" onclick="toggleSection(this)">Intermediate Level Tasks <span>(3)</span></div>
+            <div class="section-content">
+
+            <div class="task-card" data-level="intermediate" data-id="8">
+                <div class="task-title">
+                    <span class="difficulty-badge intermediate">INTERMEDIATE</span>
+                    Set Up & Modify Test Environment
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Configure test environments for automation.<br>
+                    <strong>Actions:</strong> Set up servers, configure databases, manage access, install tools.
+                </div>
+                <div class="progress-indicator">⏱️ 1-3 days</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Skills:</strong> Linux commands, networking, database config, Docker
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="intermediate" data-id="9">
+                <div class="task-title">
+                    <span class="difficulty-badge intermediate">INTERMEDIATE</span>
+                    Define Data, Rules, Testing Requirements
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Establish clear testing criteria.<br>
+                    <strong>Actions:</strong> Analyze user stories, define scenarios, document rules, identify edge cases.
+                </div>
+                <div class="progress-indicator">⏱️ 2-4 hours per feature</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Techniques:</strong> Equivalence partitioning, boundary value analysis<br>
+                    <strong>Tip:</strong> Ask "What if" questions
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="intermediate" data-id="10">
+                <div class="task-title">
+                    <span class="difficulty-badge intermediate">INTERMEDIATE</span>
+                    Create & Maintain Test Data
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Manage test data for scenarios.<br>
+                    <strong>Actions:</strong> Create SQL scripts, use data generators, maintain consistency, anonymize data.
+                </div>
+                <div class="progress-indicator">⏱️ Ongoing</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-expand" onclick="toggleExpand(this)">📖 Resources</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="expanded-content">
+                    <strong>Tools:</strong> SQL, Faker.js, Excel/CSV<br>
+                    <strong>Warning:</strong> Keep test data separate from production!
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+            </div>
+
+            <div class="section-header" onclick="toggleSection(this)">Basic Level Tasks <span>(5)</span></div>
+            <div class="section-content">
+
+            <div class="task-card" data-level="basic" data-id="11">
+                <div class="task-title">
+                    <span class="difficulty-badge basic">BASIC</span>
+                    Contribute to Test Case Design & Planning
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Participate in test planning sessions.<br>
+                    <strong>Actions:</strong> Attend meetings, suggest scenarios, review plans, provide estimates.
+                </div>
+                <div class="progress-indicator">⏱️ 1-2 hours per sprint</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="basic" data-id="12">
+                <div class="task-title">
+                    <span class="difficulty-badge basic">BASIC</span>
+                    Collaborate with Product & Tech Owners
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Clarify requirements with stakeholders.<br>
+                    <strong>Actions:</strong> Attend refinement sessions, ask questions, validate understanding.
+                </div>
+                <div class="progress-indicator">⏱️ Ongoing</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="basic" data-id="13">
+                <div class="task-title">
+                    <span class="difficulty-badge basic">BASIC</span>
+                    Participate as Scrum Team Member
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Engage in Agile ceremonies.<br>
+                    <strong>Actions:</strong> Attend standups, planning, retros, reviews. Share progress, raise blockers.
+                </div>
+                <div class="progress-indicator">⏱️ Daily</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="basic" data-id="14">
+                <div class="task-title">
+                    <span class="difficulty-badge basic">BASIC</span>
+                    Document Test Cases Using Xray
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Create test documentation in Xray.<br>
+                    <strong>Actions:</strong> Write test cases, link to stories, organize sets, update results.
+                </div>
+                <div class="progress-indicator">⏱️ 15-30 mins per case</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+
+            <div class="task-card" data-level="basic" data-id="15">
+                <div class="task-title">
+                    <span class="difficulty-badge basic">BASIC</span>
+                    Perform Manual Testing as Needed
+                </div>
+                <div class="task-desc">
+                    <strong>Objective:</strong> Execute manual test cases.<br>
+                    <strong>Actions:</strong> Run tests, verify behavior, log defects, exploratory testing, validate UI/UX.
+                </div>
+                <div class="progress-indicator">⏱️ Variable</div>
+                <div class="action-buttons">
+                    <button class="btn btn-complete" onclick="markComplete(this)">✓ Complete</button>
+                    <button class="btn btn-note" onclick="toggleNotes(this)">📝 Notes</button>
+                </div>
+                <div class="notes-area">
+                    <textarea placeholder="Your notes here..."></textarea>
+                </div>
+            </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>🇵🇭 2026 Senior Test Engineer Guide</p>
+            <p style="margin-
